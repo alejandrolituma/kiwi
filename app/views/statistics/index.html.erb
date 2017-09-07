@@ -1,5 +1,9 @@
 <ul>
 <% @teams.each do |team|  %>
-    <li><%= team.name %></li>
+    <li><%= team.name %> | 
+        <% team.team_submissions.each do |team_submission| %>
+            <%= team_submission.contest_rank %>
+        <% end %>
+    </li>
 <% end %>
 </ul>
