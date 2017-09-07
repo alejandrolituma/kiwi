@@ -1,5 +1,5 @@
 require 'json'
 
-class TeamSubmission < ApplicationRecord::Base
+class TeamSubmission < ActiveRecord::Base
 
 end

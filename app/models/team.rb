@@ -1,3 +1,3 @@
-class Team < ApplicationRecord::Base
+class Team < ActiveRecord::Base
 
 end

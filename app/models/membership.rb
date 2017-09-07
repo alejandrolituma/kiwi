@@ -1,3 +1,3 @@
-class Membership < ApplicationRecord::Base
+class Membership < ActiveRecord::Base
 
 end
