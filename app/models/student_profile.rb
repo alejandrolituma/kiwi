@@ -1,3 +1,3 @@
-class StudentProfile < ApplicationRecord::Base
+class StudentProfile < ActiveRecord::Base
 
 end

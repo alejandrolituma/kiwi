@@ -1,3 +1,3 @@
-class BusinessPlan < ApplicationRecord::Base
+class BusinessPlan < ActiveRecord::Base
 
 end

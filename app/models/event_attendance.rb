@@ -1,3 +1,3 @@
-class EventAttendance < ApplicationRecord::Base
+class EventAttendance < ActiveRecord::Base
 
 end
