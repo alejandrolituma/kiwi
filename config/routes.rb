@@ -54,4 +54,6 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
   get 'statistics/index', to: 'statistics#index'
+  get 'statistics/journey', to: 'statistics#journey'
+  get 'statistics/events', to: 'statistics#events'
 end
