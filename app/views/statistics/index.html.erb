@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -43,9 +42,28 @@
               <button class="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown"><%= team.name %>
               <span class="caret"></span></button>
               <ul class="dropdown-menu">
-                <% @teams.each do |team|  %>
+                <% team.memberships.where(member_type: "StudentProfile").each do |studentMembership| %>
+                <% studentProfile = StudentProfile.find_by_id(studentMembership.member_id) %>
+                <% studentMembership.id %>
+                <%string = ""%>
+                <% EventAttendance.where(["attendee_type = ? and attendee_id = ?", "StudentProfile", studentMembership.member_id]).each do |eventAttendance| %>
+                  <% eventAttendance.event_id %>
+                  <% random = rand(1...4) %>
+                  <% case random 
+            		   when 1 %>
+            		    <% experience = "sad"%>
+            		  <% when 2 %>
+            		    <% experience = "regular"%>
+            		  <% when 3 %>
+            		    <% experience = "happy"%>
+            		<% end %>
+                  <% string += Event.find(eventAttendance.event_id).title + ":" + experience.to_s + "," %>
+                <% end %>
+                <% unless  studentProfile.nil?  %>
+                    <%studentName=Account.find(studentProfile.account_id).first_name %>
+                <% end %>
                 <li>
-                    <button class="btn btn-link btn-lg pop" pageTitle="<%= team.name %>" pageName="about.html" ><%= team.name %></button>
+                    <button class="btn btn-link btn-lg pop" pageTitle="<%= studentName %>" studentEvents="<%= string %>" ><%= studentName %></button>
                 </li>
                 <% end %>
               </ul>
@@ -53,8 +71,7 @@
              </td> 
              
              <% if team.team_submissions.empty? %>
-                <td class="text-center"> Not submitted </td>
-                <td class="text-center"> 0 </td>
+             <td class="text-center"> Not submitted </td>
              <%end%>
                     
              <td class="text-center"><% team.team_submissions.each do |team_submission| %>
@@ -70,9 +87,18 @@
             		    Winners
             		<% end %>
             </td>
-            <td class="text-center"> 4 </td>
+            <% events = [] %>
+            <% team.memberships.where(member_type: "StudentProfile").each do |studentMembership| %>
+                <% studentProfile = StudentProfile.find_by_id(studentMembership.member_id) %>
+                <% studentMembership.member_id %>
+                <% EventAttendance.where(["attendee_type = ? and attendee_id = ?", "StudentProfile", studentMembership.member_id]).each do |eventAttendance| %>
+                    <% eventAttendance.event_id %>
+                    <% events << Event.find(eventAttendance.event_id).title %>
+                <% end %>
+            <% end %>
+            <td class="text-center"><%= "#{events.uniq.length}" %></td>
            </tr>
-          <% end %>
+           <% end %>
            <% end %>
         </tbody>
       </table>
@@ -84,39 +110,21 @@
 	$(function() {
         $(".pop").click(function(){
           var pageTitle = $(this).attr('pageTitle');
-          var pageName = $(this).attr('pageName');
-          var dict = {
-                      FirstName: "Chris",
-                      "one": 1,
-                      1: "some value"
-                    };
+          var studentEvents = $(this).attr('studentEvents');
           $(".modal .modal-title").html(pageTitle);
-          for(var key in dict) {
-            var value = dict[key];
-            $(".modal .modal-body").append("hola value");
+          $(".modal .modal-body").html("");
+          var event_details = studentEvents.split(",");
+          var event_details_length = event_details.length;
+          var text = '<table class="table table-striped"><thead><tr><th>Event</th><th>Experience</th></tr></thead><tbody>';
+          var i;
+          for (i = 0; i < event_details_length - 1; i++) {
+              var event_instances = event_details[i].split(":");
+              text += '<tr><td>' + event_instances[0] + '</td><td><img src="/assets/'  + event_instances[1] + '.png" alt="' + event_instances[1] + '" height="42" width="42""></td></tr>';
           }
+          text += '</tbody></table>'
+          $(".modal .modal-body").html(text);
+      
           $(".modal").modal("show");
         });
 	});	
 </script>
-=======
-<ul>
-<% @teams.each do |team|  %>
-    <li><%= team.name %> | 
-        <% team.team_submissions.each do |team_submission| %>
-            <%= team_submission.contest_rank %> |
-        <% end %>
-
-        <% team.memberships.where(member_type: "StudentProfile").each do |studentMembership| %>
-            <% studentProfile = StudentProfile.find_by_id(studentMembership.member_id) %>
-            <% studentMembership.id %>
-            <% unless  studentProfile.nil?  %>
-                <%= Account.find(studentProfile.account_id).first_name %>
-            <% end %>
-        <% end %>
-
-        
-    </li>
-<% end %>
-</ul>
->>>>>>> 6f17f1b0b52adab47f2b1e4036969d866800f28d
