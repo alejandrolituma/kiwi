@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -98,3 +99,24 @@
         });
 	});	
 </script>
+=======
+<ul>
+<% @teams.each do |team|  %>
+    <li><%= team.name %> | 
+        <% team.team_submissions.each do |team_submission| %>
+            <%= team_submission.contest_rank %> |
+        <% end %>
+
+        <% team.memberships.where(member_type: "StudentProfile").each do |studentMembership| %>
+            <% studentProfile = StudentProfile.find_by_id(studentMembership.member_id) %>
+            <% studentMembership.id %>
+            <% unless  studentProfile.nil?  %>
+                <%= Account.find(studentProfile.account_id).first_name %>
+            <% end %>
+        <% end %>
+
+        
+    </li>
+<% end %>
+</ul>
+>>>>>>> 6f17f1b0b52adab47f2b1e4036969d866800f28d
