@@ -1,56 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
         <meta charset="utf-8" />
-        <title>Hello world from Cloud9!</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </head>
     
-    <div class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">Brand</a>
+    <div class="container">
+      <h2 class="text-center">Mexico</h2>
+      <div class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+
+      <table class="table table-responsive table-bordered table-striped" style="width:50%;margin: 0 auto;overflow: visible;">
+        <thead>
+          <tr>
+            <th class="text-center">Team</th>
+            <th class="text-center">Stage</th>
+            <th class="text-center">Number of Events</th>
+          </tr>
+        </thead>
+        <tbody>
+           <% @teams.each do |team|  %>
+           <tr>
+             <td class="text-center"> 
+             <div class="dropdown">
+              <button class="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown"><%= team.name %>
+              <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <% @teams.each do |team|  %>
+                <li>
+                    <button class="btn btn-link btn-lg pop" pageTitle="<%= team.name %>" pageName="about.html" ><%= team.name %></button>
+                </li>
+                <% end %>
+              </ul>
+             </div>
+             </td> 
+             
+             <% if team.team_submissions.empty? %>
+                <td class="text-center"> Not submitted </td>
+                <td class="text-center"> 0 </td>
+             <%end%>
+                    
+             <td class="text-center"><% team.team_submissions.each do |team_submission| %>
+                  <%rank=team_submission.contest_rank %>
+                  <% case rank 
+            		   when 0 %>
+            		    Quarterfinals
+            		  <% when 1 %>
+            		    Semifinals
+            		  <% when 2 %>
+            		    Finals
+            		  <% when 3 %>
+            		    Winners
+            		<% end %>
+            </td>
+            <td class="text-center"> 4 </td>
+           </tr>
+          <% end %>
+           <% end %>
+        </tbody>
+      </table>
     </div>
-    <div class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#about">About</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Username</a></li>
-      </ul>
-    </div><!--/.nav-collapse -->
-  </div>
-</div>
-
-<div class="wide">
-  	<div class="col-xs-5 line"><hr></div>
-    <div class="col-xs-2 logo">Logo</div>
-    <div class="col-xs-5 line"><hr></div>
-</div>
-
-<div class="container">
-  <div class="text-center">
-    <h1>Content</h1>
-  </div>
-</div><!-- /.container -->
+   
 </html>
 
-<ul>
-<% @teams.each do |team|  %>
-    <li><%= team.name %> | 
-        <% team.team_submissions.each do |team_submission| %>
-            <%= team_submission.contest_rank %>
-        <% end %>
-    </li>
-<% end %>
-</ul>
+<script>
+	$(function() {
+        $(".pop").click(function(){
+          var pageTitle = $(this).attr('pageTitle');
+          var pageName = $(this).attr('pageName');
+          var dict = {
+                      FirstName: "Chris",
+                      "one": 1,
+                      1: "some value"
+                    };
+          $(".modal .modal-title").html(pageTitle);
+          for(var key in dict) {
+            var value = dict[key];
+            $(".modal .modal-body").append("hola value");
+          }
+          $(".modal").modal("show");
+        });
+	});	
+</script>
